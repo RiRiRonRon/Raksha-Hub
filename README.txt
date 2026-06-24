@@ -25,4 +25,4 @@ Requirements:
 4. Run windeployqt
 
 
-PS: the releases dont contain some things existing in the source code  
+ 
