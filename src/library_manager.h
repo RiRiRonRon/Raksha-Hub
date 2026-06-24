@@ -36,6 +36,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE void         addMovie(const QUrl &fileUrl);
+    Q_INVOKABLE void rescanShow(int entryId);
     Q_INVOKABLE void         addShow(const QUrl &folderUrl);
     Q_INVOKABLE void         removeAt(int row);
     Q_INVOKABLE void         moveEntry(int fromRow, int toRow);
