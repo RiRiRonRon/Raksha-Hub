@@ -172,7 +172,53 @@ void LibraryManager::addShow(const QUrl &folderUrl)
     queueMissingThumbnails(entry);
 }
 
+void LibraryManager::rescanShow(int entryId)
+{
+    const int row = rowForId(entryId);
+    if (row < 0) return;
+    LibraryEntry &entry = m_entries[row];
+    if (entry.kind != "Show" || entry.filePath.isEmpty()) return;
 
+    
+    const QList<EpisodeEntry> found = scanShowFolder(entry.filePath);
+    bool changed = false;
+    QSet<int> newSeasons;   
+
+    for (const EpisodeEntry &scanned : found) {
+        bool exists = false;
+        for (const EpisodeEntry &existing : std::as_const(entry.episodes)) {
+            if (existing.season  == scanned.season &&
+                existing.episode == scanned.episode) {
+                exists = true;
+                break;
+            }
+        }
+        if (!exists) {
+            entry.episodes.append(scanned);
+            saveEpisodeToDatabase(entryId, scanned);
+            newSeasons.insert(scanned.season);   
+            changed = true;
+        }
+    }
+
+    if (changed) {
+        std::sort(entry.episodes.begin(), entry.episodes.end(),
+                  [](const EpisodeEntry &a, const EpisodeEntry &b) {
+                      if (a.season != b.season) return a.season < b.season;
+                      return a.episode < b.episode;
+                  });
+
+        queueMissingThumbnails(entry);
+
+
+        if (!entry.imdbId.isEmpty()) {
+            for (int season : std::as_const(newSeasons))
+                fetchShowEpisodes(entryId, entry.imdbId, season);
+        }
+
+        emit episodesUpdated(entryId);
+    }
+}
 
 void LibraryManager::moveEntry(int fromRow, int toRow)
 {
