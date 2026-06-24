@@ -7,9 +7,19 @@
                                                                                                             
                                                                                                             
 
-                                                                                                            
-                                                                                                            
+                                                                                                                                                                                                                      
 Your personal media hub for movies and TV shows  organized, tracked, and ready to watch. 
 
- 
+
                                                                                                             
+## Building from source
+
+Requirements:
+- Qt 6.11+ with MinGW 64-bit
+- libmpv (place in libs/mpv/)
+- FFmpeg (place ffmpeg.exe next to built exe)
+
+1. Clone the repo
+2. Open CMakeLists.txt in Qt Creator
+3. Build in Release mode
+4. Run windeployqt
