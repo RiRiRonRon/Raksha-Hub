@@ -23,3 +23,6 @@ Requirements:
 2. Open CMakeLists.txt in Qt Creator
 3. Build in Release mode
 4. Run windeployqt
+
+
+PS: the releases dont contain some things existing in the source code  
