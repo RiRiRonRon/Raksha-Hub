@@ -76,6 +76,7 @@ Item {
                 activeSeason = continueEpisode.season
             else if (seasonNumbers.length > 0)
                 activeSeason = seasonNumbers[0]
+            LibraryManager.rescanShow(entryId)
         }
     }
 
